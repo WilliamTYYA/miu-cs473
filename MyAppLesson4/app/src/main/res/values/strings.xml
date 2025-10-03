@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">MyApp-Lesson4</string>
+    <string name="compro_admission_team">Compro Admission Team</string>
+    <string name="compro_professionals">Compro Professionals</string>
+    <string name="faculty_student">Faculty Student</string>
+    <string name="friends">Friends</string>
+    <string name="graduation">Graduation</string>
+    <string name="miu_campus">MIU Campus</string>
+    <string name="rainbow">Rainbow</string>
+    <string name="sustainable_living_center">Sustainable Living Center</string>
+</resources>
