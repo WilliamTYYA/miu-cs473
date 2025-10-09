@@ -2,15 +2,24 @@ package com.miu.lesson5_part2.ui.test
 
 import com.miu.lesson5_part2.data.FakeRepository
 import com.miu.lesson5_part2.ui.AlphabetViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import org.junit.Before
 import org.junit.Test
 
 class AlphabetViewModelText {
     // Initialize later
     private lateinit var alphabetviewModel: AlphabetViewModel
+    private lateinit var testDispatcher: TestDispatcher
 
     @Before
     fun setup() {
+        testDispatcher = StandardTestDispatcher()
+        Dispatchers.setMain(testDispatcher)
         alphabetviewModel = AlphabetViewModel(FakeRepository())
     }
 
@@ -23,8 +32,9 @@ class AlphabetViewModelText {
     }
 
     @Test
-    fun testAlphabetUIStateAfterNextAlphabet() {
+    fun testAlphabetUIStateAfterNextAlphabet() = runTest {
         alphabetviewModel.nextAlphabet()
+        advanceUntilIdle()
         val uiState = alphabetviewModel.alphabetUIState.value
         assert(uiState.alphabet == 'B') //true
         assert(uiState.word == "Bravo") //true
@@ -32,9 +42,10 @@ class AlphabetViewModelText {
     }
 
     @Test
-    fun testAlphabetUIStateAfterNextAlphabetCompleted() {
+    fun testAlphabetUIStateAfterNextAlphabetCompleted() = runTest {
         repeat(2) {
             alphabetviewModel.nextAlphabet()
+            advanceUntilIdle()
         }
         val uiState = alphabetviewModel.alphabetUIState.value
         assert(uiState.alphabet == 'C') //true

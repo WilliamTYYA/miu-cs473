@@ -3,12 +3,14 @@ package com.miu.lesson5_part2.ui
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.structuralEqualityPolicy
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.miu.lesson5_part2.data.AlphabetData
 import com.miu.lesson5_part2.data.AlphabetRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,22 +32,33 @@ class AlphabetViewModel @Inject constructor (
     val alphabetUIState = _alphabetUIState.asStateFlow()
 
     fun nextAlphabet() {
-        val nextAlphabet = alphabetRepository.getNextAlphabet(_alphabetUIState.value.alphabet to _alphabetUIState.value.word)
-        if (nextAlphabet == alphabetData.last()) {
+        viewModelScope.launch {
+            // set loading as true
             _alphabetUIState.update {
                 it.copy(
-                    nextAlphabet.first,
-                    nextAlphabet.second,
-                    isCompleted = true
+                    isLoading = true
                 )
             }
-        } else {
-            _alphabetUIState.update {
-                it.copy(
-                    nextAlphabet.first,
-                    nextAlphabet.second,
-                    isCompleted = false
-                )
+            val nextAlphabet =
+                alphabetRepository.getNextAlphabet(_alphabetUIState.value.alphabet to _alphabetUIState.value.word)
+            if (nextAlphabet == alphabetData.last()) {
+                _alphabetUIState.update {
+                    it.copy(
+                        nextAlphabet.first,
+                        nextAlphabet.second,
+                        isCompleted = true,
+                        isLoading = false
+                    )
+                }
+            } else {
+                _alphabetUIState.update {
+                    it.copy(
+                        nextAlphabet.first,
+                        nextAlphabet.second,
+                        isCompleted = false,
+                        isLoading = false
+                    )
+                }
             }
         }
 //        val currentIndex = alphabetData.indexOfFirst { it.first == _alphabetUIState.value.alphabet }
@@ -74,5 +87,9 @@ class AlphabetViewModel @Inject constructor (
 //                )
 //            }
 //        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
     }
 }

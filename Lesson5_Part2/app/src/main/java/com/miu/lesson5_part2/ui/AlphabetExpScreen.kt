@@ -3,6 +3,7 @@ package com.miu.lesson5_part2.ui
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.miu.lesson5_part2.data.AlphabetRepository
 import com.miu.lesson5_part2.data.AlphabetRepositoryImp
 import com.miu.lesson5_part2.ui.theme.Lesson5_Part2Theme
+import dagger.hilt.internal.aggregatedroot.codegen._com_miu_lesson5_part2_AlphabetApp
 
 @Composable
 fun AlphabetExpScreen(modifier: Modifier = Modifier) {
@@ -40,6 +42,10 @@ fun AlphabetExpScreen(modifier: Modifier = Modifier) {
             when {
                 alphabetUIState.value.isCompleted -> {
                     Text(text="It's completed!")
+                }
+
+                alphabetUIState.value.isLoading -> {
+                    LinearProgressIndicator()
                 }
             }
         }
