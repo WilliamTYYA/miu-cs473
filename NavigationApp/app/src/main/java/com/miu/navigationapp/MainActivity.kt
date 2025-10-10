@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.miu.navigationapp.nav.AppNavGraph
 import com.miu.navigationapp.ui.theme.NavigationAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -19,7 +20,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             NavigationAppTheme {
-
+                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
+                    AppNavGraph(modifier = Modifier.padding(innerPadding))
+                }
             }
         }
     }

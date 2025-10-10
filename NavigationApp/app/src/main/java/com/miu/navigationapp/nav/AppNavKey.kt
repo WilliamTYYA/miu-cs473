@@ -10,7 +10,7 @@ object Home: AppNavKey
 @Serializable
 data class ProductList(val category: Category): AppNavKey // Modify later => Enum
 @Serializable
-data class ProductDetail(val productId: Int): AppNavKey
+data class ProductDetail(val productId: String): AppNavKey
 @Serializable
 object Settings: AppNavKey
 
